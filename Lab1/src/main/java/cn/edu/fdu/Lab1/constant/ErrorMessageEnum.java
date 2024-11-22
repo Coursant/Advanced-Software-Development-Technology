@@ -27,6 +27,11 @@ public enum ErrorMessageEnum {
     INVALID_ARGUMENT("INVALID_ARGUMENT", "Invalid argument provided."),
 
     /**
+     * 不能撤销
+     */
+    CANNOT_UNDO("CANNOT_UNDO" ,"This operation cannot be undone."),
+
+    /**
      * 未知命令
      */
     UNKNOWN_COMMAND("UNKNOWN_COMMAND_ERROR", "Unknown command.");

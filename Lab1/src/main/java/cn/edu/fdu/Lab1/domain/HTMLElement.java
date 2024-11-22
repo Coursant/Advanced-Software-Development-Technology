@@ -25,14 +25,6 @@ public class HTMLElement {
         children.add(child);
     }
 
-    public void addChildAt(int index, HTMLElement element) {
-        if (index >= 0 && index <= children.size()) {
-            children.add(index, element);
-        } else {
-            this.addChild(element);
-        }
-    }
-
     public void removeChild(HTMLElement child) {
         children.remove(child);
     }
