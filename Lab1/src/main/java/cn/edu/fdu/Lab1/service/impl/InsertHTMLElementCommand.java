@@ -1,5 +1,6 @@
 package cn.edu.fdu.Lab1.service.impl;
 
+import cn.edu.fdu.Lab1.constant.ErrorMessageEnum;
 import cn.edu.fdu.Lab1.domain.CommandContext;
 import cn.edu.fdu.Lab1.domain.HTMLElement;
 import cn.edu.fdu.Lab1.service.Command;
@@ -21,14 +22,34 @@ public class InsertHTMLElementCommand implements Command {
 
     @Override
     public void execute() {
-        HTMLElement parent = context.getIdMap().get(insertLocation);
-        if (parent != null && !context.getIdMap().containsKey(idValue)) {
-            HTMLElement newElement = new HTMLElement(tagName, idValue, textContent);
-            parent.addChild(newElement);
-            context.getIdMap().put(idValue, newElement);
-            System.out.println("Inserted element: " + idValue);
+        // 获取插入位置元素
+        HTMLElement locationElement = context.getIdMap().get(insertLocation);
+
+        // 校验：插入位置元素是否存在，以及新元素 ID 是否唯一
+        if (locationElement != null) {
+            if (!context.getIdMap().containsKey(idValue)) {
+                HTMLElement parentElement = context.findParent(locationElement);
+                if (parentElement != null) {
+                    int insertIndex = parentElement.getChildren().indexOf(locationElement);
+
+                    if (insertIndex != -1) {
+                        HTMLElement newElement = new HTMLElement(tagName, idValue, textContent);
+                        // 将新元素插入到指定位置之前
+                        parentElement.addChildAt(insertIndex, newElement);
+                        context.getIdMap().put(idValue, newElement);
+
+                        System.out.println("Inserted element: " + idValue);
+                    } else {
+                        System.out.println(ErrorMessageEnum.ELEMENT_NOTFOUND_ERROR.getType());
+                    }
+                } else {
+                    System.out.println(ErrorMessageEnum.PARNET_ELEMENT_NOTFOUND_ERROR.getType());
+                }
+            } else {
+                    System.out.println(ErrorMessageEnum.ELEMENT_NOTFOUND_ERROR.getType());
+            }
         } else {
-            System.out.println("Error: Element with ID " + idValue + " already exists or parent not found.");
+            System.out.println(ErrorMessageEnum.PARNET_ELEMENT_NOTFOUND_ERROR.getType());
         }
     }
 
