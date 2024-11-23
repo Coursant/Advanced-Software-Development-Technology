@@ -17,7 +17,7 @@ public class CommandContext {
     /**
      * 存储所有 HTML 元素
      */
-    private Map<String, HTMLElement> idMap;
+    private Map<String, HTMLElement> idMap = new HashMap<>();
     /**
      * 被删除的元素
      */
