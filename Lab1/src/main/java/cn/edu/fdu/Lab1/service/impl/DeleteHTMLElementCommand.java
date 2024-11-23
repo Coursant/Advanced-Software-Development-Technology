@@ -9,6 +9,7 @@ public class DeleteHTMLElementCommand implements Command {
     private CommandContext context;
     private String idValue;
     private HTMLElement deletedElement;
+    private int originalIndex;
 
     public DeleteHTMLElementCommand(CommandContext context, String idValue) {
         this.context = context;
@@ -21,6 +22,7 @@ public class DeleteHTMLElementCommand implements Command {
         if (element != null) {
             HTMLElement parent = context.findParent(element);
             if (parent != null) {
+                originalIndex = parent.getChildren().indexOf(element);
                 parent.removeChild(element);
                 context.getIdMap().remove(idValue);
                 context.setDeletedElement(element);
@@ -35,9 +37,9 @@ public class DeleteHTMLElementCommand implements Command {
     public void undo() {
         if (context.getDeletedElement() != null) {
             HTMLElement element = context.getDeletedElement();
-            HTMLElement parent = context.findParent(element);
+            HTMLElement parent = context.findParentId(element);
             if (parent != null) {
-                parent.addChild(element);
+                parent.addChildAt(originalIndex, element);
                 context.getIdMap().put(element.getId(), element);
                 System.out.println("Undone delete: " + element.getId());
             }

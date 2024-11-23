@@ -11,10 +11,10 @@ public class EditHTMLElementTextCommand implements Command {
     private String oldTextContent;
     private String newTextContent;
 
-    public EditHTMLElementTextCommand(CommandContext context, String idValue, String oldTextContent, String newTextContent) {
+    public EditHTMLElementTextCommand(CommandContext context, String idValue, String newTextContent) {
         this.context = context;
         this.idValue = idValue;
-        this.oldTextContent = oldTextContent;
+        this.oldTextContent = context.getIdMap().get(idValue).getTextContent();
         this.newTextContent = newTextContent;
     }
 

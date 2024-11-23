@@ -38,6 +38,10 @@ public class CommandContext {
         return null;
     }
 
+    public HTMLElement findParentId(HTMLElement element) {
+        HTMLElement parent = idMap.get(element.getParentId());
+        return parent;
+    }
 
     public boolean parser(String htmlContent) throws Exception {
 

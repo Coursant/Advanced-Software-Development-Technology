@@ -13,21 +13,35 @@ public class HTMLElement {
     private String id;
     private String textContent;
     private List<HTMLElement> children;
+    private String parentId;  // 存储父元素的 ID
 
     public HTMLElement(String tagName, String id, String textContent) {
         this.tagName = tagName;
         this.id = (id == null || id.isEmpty()) ? tagName : id;
         this.textContent = textContent;
         this.children = new ArrayList<>();
+        this.parentId = null;  // 默认没有父元素
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    // 获取父元素 ID
+    public String getParentId() {
+        return parentId;
     }
 
     public void addChild(HTMLElement child) {
         children.add(child);
+        child.setParentId(this.id);  // 设置父元素的 ID
     }
+
 
     public void addChildAt(int index, HTMLElement element) {
         if (index >= 0 && index <= children.size()) {
             children.add(index, element);
+            element.setParentId(this.id);
         } else {
             this.addChild(element);
         }
