@@ -14,6 +14,8 @@ public class HTMLElement {
     private String textContent;
     private List<HTMLElement> children;
     private String parentId;  // 存储父元素的 ID
+    private Boolean hasSpellError; //用于判断是否存在拼写错误
+    private Boolean IsShowId; //是否展示#id
 
     public HTMLElement(String tagName, String id, String textContent) {
         this.tagName = tagName;
@@ -21,6 +23,8 @@ public class HTMLElement {
         this.textContent = textContent;
         this.children = new ArrayList<>();
         this.parentId = null;  // 默认没有父元素
+        this.hasSpellError = true;
+        this.IsShowId = false;
     }
 
     public void setParentId(String parentId) {
@@ -63,8 +67,18 @@ public class HTMLElement {
         StringBuilder sb = new StringBuilder();
         String indentStr = " ".repeat(indent);
 
-        sb.append(indentStr).append("<").append(tagName)
+        sb.append(indentStr);
+        // 检查拼写错误有错误添加[X]
+        if (hasSpellError) {
+            sb.append("[X] ");
+        }
+
+        sb.append("<").append(tagName)
                 .append(" id=\"").append(id).append("\">");
+        //展示#id
+        if(IsShowId){
+            sb.append(" #id");
+        }
 
         if (textContent != null && !textContent.isEmpty()) {
             sb.append("\n").append(indentStr).append("  ").append(textContent);
@@ -79,5 +93,18 @@ public class HTMLElement {
 
         sb.append("\n").append(indentStr).append("</").append(tagName).append(">");
         return sb.toString();
+    }
+
+    /**
+     * 递归修改isShowId
+     * @param isShow
+     */
+    public void changeShowId(boolean isShow){
+        this.IsShowId = isShow;
+        if(!children.isEmpty()){
+            for (HTMLElement child : children) {
+                child.setIsShowId(isShow);
+            }
+        }
     }
 }
