@@ -17,6 +17,7 @@ public class FileSessionManager {
 
     private List<FileSession> sessions ; //已经打开的文件列表
     private FileSession activeSession; //当前活动文件
+    private FileSession previousSession; //当前活动文件的原始状态
     private Scanner scanner;
 
     public FileSessionManager(){
@@ -37,6 +38,7 @@ public class FileSessionManager {
 
         // 创建新的文件会话
         FileSession newSession = new FileSession(filename);
+
         try {
             newSession.load(); // 加载文件内容
             sessions.add(newSession);
@@ -56,6 +58,7 @@ public class FileSessionManager {
             if (session.getFilename().equals(filename)) {
                 try {
                     session.save();
+                    previousSession = session; //修改上一文件记录
                     System.out.println("文件 " + filename + " 保存成功");
                 } catch (IOException e) {
                     System.err.println("保存文件 " + filename + " 时发生错误: " + e.getMessage());
@@ -79,6 +82,9 @@ public class FileSessionManager {
                         System.err.println("保存文件 " + activeSession.getFilename() + " 时发生错误: " + e.getMessage());
                     }
                 }
+                else if("n".equals(response)){
+                    activeSession = previousSession;
+                }
             }
             sessions.remove(activeSession);
             System.out.println("文件 " + activeSession.getFilename() + " 已关闭。");
@@ -96,6 +102,8 @@ public class FileSessionManager {
 
     public void setActiveSession(FileSession session) {
         if (session != null) {
+            // 保存文件的原始状态
+            previousSession = session;
             activeSession = session;
         } else {
             System.out.println("没有设置当前编辑文件。");
