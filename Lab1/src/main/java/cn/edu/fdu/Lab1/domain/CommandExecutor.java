@@ -7,29 +7,10 @@ import cn.edu.fdu.Lab1.service.impl.*;
 import java.util.HashMap;
 
 public class CommandExecutor {
-    private final CommandContext context;
-    private final CommandHistory history;
+    private final FileSessionManager fileSessionManager;
 
     public CommandExecutor() {
-        this.context = initializeContext();
-        this.history = new CommandHistory();
-    }
-
-    private CommandContext initializeContext() {
-        CommandContext context = new CommandContext();
-        HTMLElement htmlElement = new HTMLElement("html", "html", null);
-        HTMLElement head = new HTMLElement("head", "head", null);
-        HTMLElement body = new HTMLElement("body", "body", null);
-
-        htmlElement.addChild(head);
-        htmlElement.addChild(body);
-
-        context.setIdMap(new HashMap<>());
-        context.getIdMap().put("html", htmlElement);
-        context.getIdMap().put("head", head);
-        context.getIdMap().put("body", body);
-
-        return context;
+        this.fileSessionManager = new FileSessionManager();
     }
 
     public void executeCommand(String input) {
@@ -63,10 +44,26 @@ public class CommandExecutor {
                     handleSpellCheck();
                     break;
                 case "undo":
-                    history.undo();
+                    handleUndo();
                     break;
                 case "redo":
-                    history.redo();
+                    handleRedo();
+                    break;
+                //钱：添加多编辑器命令
+                case "load":
+                    fileSessionManager.loadFile(parts[1]);
+                    break;
+                case "save":
+                    fileSessionManager.saveFile(parts[1]);
+                    break;
+                case "close":
+                    fileSessionManager.closeFile();
+                    break;
+                case "editor-list":
+                    fileSessionManager.listEditors();
+                    break;
+                case "edit":
+                    fileSessionManager.editFile(parts[1]);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown command: " + commandName);
@@ -86,8 +83,9 @@ public class CommandExecutor {
         String idValue = params[1];
         String insertLocation = params[2];
         String textContent = params[3];
-        Command command = new InsertHTMLElementCommand(context, tagName, idValue, insertLocation, textContent);
-        history.addCommand(command);
+        Command command = new InsertHTMLElementCommand(fileSessionManager.getActiveSession().getCommandContext(), tagName, idValue, insertLocation, textContent);
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
     }
 
     private void handleAppend(String args) {
@@ -100,14 +98,16 @@ public class CommandExecutor {
         String idValue = params[1];
         String parentElementId = params[2];
         String textContent = params[3];
-        Command command = new AppendHTMLElementCommand(context, tagName, idValue, parentElementId, textContent);
-        history.addCommand(command);
+        Command command = new AppendHTMLElementCommand(fileSessionManager.getActiveSession().getCommandContext(), tagName, idValue, parentElementId, textContent);
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
     }
 
     private void handleDelete(String args) {
         String idValue = args.trim();
-        Command command = new DeleteHTMLElementCommand(context, idValue);
-        history.addCommand(command);
+        Command command = new DeleteHTMLElementCommand(fileSessionManager.getActiveSession().getCommandContext(), idValue);
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
     }
 
     private void handleEditId(String args) {
@@ -118,8 +118,9 @@ public class CommandExecutor {
         }
         String oldId = params[0];
         String newId = params[1];
-        Command command = new EditHTMLElementIdCommand(context, oldId, newId);
-        history.addCommand(command);
+        Command command = new EditHTMLElementIdCommand(fileSessionManager.getActiveSession().getCommandContext(), oldId, newId);
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
     }
 
     private void handleEditText(String args) {
@@ -130,12 +131,13 @@ public class CommandExecutor {
         }
         String idValue = params[0];
         String newTextContent = params[1];
-        Command command = new EditHTMLElementTextCommand(context, idValue, null, newTextContent);
-        history.addCommand(command);
+        Command command = new EditHTMLElementTextCommand(fileSessionManager.getActiveSession().getCommandContext(), idValue, null, newTextContent);
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
     }
 
     private void handlePrintTree() {
-        HTMLElement root = context.getIdMap().get("html");
+        HTMLElement root = fileSessionManager.getActiveSession().getCommandContext().getIdMap().get("html");
         if (root != null) {
             System.out.println(root.print(0));
         } else {
@@ -145,7 +147,7 @@ public class CommandExecutor {
 
     private void handlePrintIndent(String args) {
         int indent = Integer.parseInt(args.trim());
-        HTMLElement root = context.getIdMap().get("html");
+        HTMLElement root = fileSessionManager.getActiveSession().getCommandContext().getIdMap().get("html");
         if (root != null) {
             System.out.println(root.print(indent));
         } else {
@@ -154,7 +156,16 @@ public class CommandExecutor {
     }
 
     private void handleSpellCheck() {
-        Command command = new SpellCheckCommand(context);
-        history.addCommand(command);
+        Command command = new SpellCheckCommand(fileSessionManager.getActiveSession().getCommandContext());
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+    }
+
+    private void handleUndo() {
+        fileSessionManager.getActiveSession().getCommandHistory().undo();
+        fileSessionManager.getActiveSession().markAsModified();
+    }
+    private void handleRedo() {
+        fileSessionManager.getActiveSession().getCommandHistory().redo();
+        fileSessionManager.getActiveSession().markAsModified();
     }
 }
