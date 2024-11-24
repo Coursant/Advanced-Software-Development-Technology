@@ -117,7 +117,6 @@ public class FileSessionManager {
         }
     }
 
-
     public FileSession getSessionByFilename(String filename) {
         for (FileSession session : sessions) {
             if (session.getFilename().equals(filename)) {

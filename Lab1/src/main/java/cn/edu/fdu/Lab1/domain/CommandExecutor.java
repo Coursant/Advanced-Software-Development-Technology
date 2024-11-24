@@ -170,6 +170,7 @@ public class CommandExecutor {
     private void handleRedo() {
         fileSessionManager.getActiveSession().getCommandHistory().redo();
         fileSessionManager.getActiveSession().markAsModified();
+
     }
 
     private void handleShowid(String args){
