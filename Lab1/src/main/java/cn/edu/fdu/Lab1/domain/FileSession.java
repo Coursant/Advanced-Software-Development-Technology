@@ -1,24 +1,37 @@
 package cn.edu.fdu.Lab1.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileSession {
     private String filename;
     private boolean modified;
     private CommandContext commandContext;
     private CommandHistory commandHistory;
+    private List<FileSession> fileSessionList; //子目录列表
 
     public FileSession(String filename) {
         this.filename = filename;
         this.modified = false;
         this.commandContext = new CommandContext(); // 初始化新的命令上下文
         this.commandHistory = new CommandHistory();
+        this.fileSessionList = new ArrayList<>();
     }
 
     public void load() throws IOException,Exception {
@@ -88,5 +101,9 @@ public class FileSession {
 
     public CommandHistory getCommandHistory() {
         return commandHistory;
+    }
+
+    public void addSession(FileSession fileSession){
+        fileSessionList.add(fileSession);
     }
 }

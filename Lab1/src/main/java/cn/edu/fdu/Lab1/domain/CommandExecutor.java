@@ -68,6 +68,11 @@ public class CommandExecutor {
                 //增强部分2：是否显示#id
                 case "showid":
                     handleShowid(parts[1]);
+                //增强部分3：显示文件目录
+                case "dir-tree":
+                    handleDirTree(parts[0]);
+                case "dir-ident":
+                    handelDirIdent(parts[0]);
                 default:
                     throw new IllegalArgumentException("Unknown command: " + commandName);
             }
@@ -176,6 +181,17 @@ public class CommandExecutor {
     private void handleShowid(String args){
         HTMLElement root = fileSessionManager.getActiveSession().getCommandContext().getIdMap().get("html");
         Command command = new ShowIdCommand(fileSessionManager.getActiveSession().getCommandContext(),root,args);
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
+    }
+
+    private void handleDirTree(String args){
+        Command command = new DirCommand(fileSessionManager.getSessions(),args,fileSessionManager.getActiveSession().getFilename());
+        fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
+        fileSessionManager.getActiveSession().markAsModified();
+    }
+    private void handelDirIdent(String args){
+        Command command = new DirCommand(fileSessionManager.getSessions(),args,fileSessionManager.getActiveSession().getFilename());
         fileSessionManager.getActiveSession().getCommandHistory().addCommand(command);
         fileSessionManager.getActiveSession().markAsModified();
     }

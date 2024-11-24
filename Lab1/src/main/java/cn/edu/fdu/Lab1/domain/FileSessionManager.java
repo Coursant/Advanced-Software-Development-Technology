@@ -1,16 +1,29 @@
 package cn.edu.fdu.Lab1.domain;
 
-import java.io.File;
-import java.io.FileWriter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class FileSessionManager {
-    private List<FileSession> sessions = new ArrayList<>();
-    private FileSession activeSession = null;
-    private Scanner scanner = new Scanner(System.in);
+
+    private List<FileSession> sessions ; //已经打开的文件列表
+    private FileSession activeSession; //当前活动文件
+    private Scanner scanner;
+
+    public FileSessionManager(){
+        this.sessions = new ArrayList<>();
+        this.activeSession = null;
+        this.scanner = new Scanner(System.in);
+    }
 
     public void loadFile(String filename) {
         // 检查文件是否已经打开
@@ -105,7 +118,6 @@ public class FileSessionManager {
             System.out.println(marker + " " + session.getFilename() + modifiedMarker);
         }
     }
-
 
     public void editFile(String filename) {
         FileSession session = getSessionByFilename(filename);
