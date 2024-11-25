@@ -69,9 +69,9 @@ public class HTMLElement {
 
         sb.append(indentStr);
         // 检查拼写错误有错误添加[X]
-        if (hasSpellError) {
-            sb.append("[X] ");
-        }
+//        if (hasSpellError) {
+//            sb.append("[X] ");
+//        }
 
         sb.append("<").append(tagName)
                 .append(" id=\"").append(id).append("\">");
