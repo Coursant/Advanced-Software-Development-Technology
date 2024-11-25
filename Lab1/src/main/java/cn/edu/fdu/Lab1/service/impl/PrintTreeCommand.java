@@ -6,6 +6,8 @@ import cn.edu.fdu.Lab1.domain.HTMLElement;
 import cn.edu.fdu.Lab1.service.Command;
 import cn.edu.fdu.Lab1.util.impl.SpellCheckUtilImpl;
 
+import java.io.IOException;
+
 public class PrintTreeCommand implements Command {
     private CommandContext context;
     private HTMLElement rootElement;
@@ -32,8 +34,12 @@ public class PrintTreeCommand implements Command {
      * @param element
      */
     private void checkSpellErrors(HTMLElement element) {
-        if (spellCheckUtil.check(element.getTextContent())) {
-            element.setHasSpellError(true);
+        try {
+            if (spellCheckUtil.check(element.getTextContent())) {
+                element.setHasSpellError(true);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         //递归检查子标签
         for (HTMLElement child : element.getChildren()) {
