@@ -46,7 +46,8 @@ public class FileSession {
             String content = Files.readString(filePath);
             // 解析文件内容并初始化上下文，这里parseContent还没完成
             System.out.println(content);
-            System.out.println(commandContext.parser(content));
+            commandContext.parser(content);
+            System.out.println(commandContext);
             // commandContext.parser(content);
         }
 
@@ -85,9 +86,9 @@ public class FileSession {
 
     public void save() throws IOException {
         // 实现文件保存逻辑
-        // 假设我们已经有了将CommandContext转换为字符串的方法
-        //String content = commandContext.toHtmlString(); //待实现
-        String content = commandContext.toString();//暂时代替toHtmlString()
+
+        HTMLElement HTML = commandContext.getIdMap().get("html");
+        String content = HTML.print(4);
         System.out.println(content);
         FileWriter writer = new FileWriter(new File(filename));
         writer.write(content);

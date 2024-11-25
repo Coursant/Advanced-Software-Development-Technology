@@ -74,6 +74,8 @@ public class CommandContext {
                 if ( idValue.isEmpty()) {
                     tagCounter.put(tagName, tagCounter.getOrDefault(tagName, 0) + 1);
                     idValue = tagName + tagCounter.get(tagName); // 生成唯一 id
+                }else {
+                    idValue=idValue.substring(4,idValue.length()-1);
                 }
                 // 创建新元素
                 HTMLElement newElement = new HTMLElement(tagName, idValue, null);
@@ -85,15 +87,13 @@ public class CommandContext {
                     // 将新元素插入 HTMLDocument 的 idMap
                     // 入栈
                     elementStack.push(newElement);
-                }else{
                     idMap.put(idValue, newElement);
-
                 }
 
 
             } else if (matcher.group(3) != null) {
                 if(elementStack.peek().getTagName().equals("html")){
-                    idMap.put("html1",elementStack.peek());
+                    idMap.put("html",elementStack.peek());
 
                 }
                 elementStack.pop();

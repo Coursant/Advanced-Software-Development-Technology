@@ -31,6 +31,8 @@ public class HTMLElement {
         this.parentId = parentId;
     }
 
+
+
     // 获取父元素 ID
     public String getParentId() {
         return parentId;
@@ -68,7 +70,7 @@ public class HTMLElement {
         String indentStr = " ".repeat(indent);
 
         sb.append(indentStr);
-        // 检查拼写错误有错误添加[X]
+//         检查拼写错误有错误添加[X]
         if (hasSpellError) {
             sb.append("[X] ");
         }
