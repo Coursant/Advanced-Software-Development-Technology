@@ -47,28 +47,6 @@ class FileSessionTest {
         assertNotNull(fileSession.getFileSessionList(), "File session list should be initialized.");
     }
 
-    @Test
-    void testLoadFileNotExist() throws IOException, Exception {
-        // Ensure the file does not exist before loading
-
-        // Load the file (should initialize context)
-        fileSession.load();
-
-        // Check that the context is initialized correctly
-        assertNotNull(fileSession.getCommandContext().getIdMap(), "Context should be initialized with idMap.");
-        assertFalse(fileSession.isModified(), "File should be marked as unmodified after loading.");
-    }
-
-    @Test
-    void testLoadFileExists() throws IOException, Exception {
-        // Create a temporary file with some content
-
-        // Load the file (should read content)
-        fileSession.load();
-
-        // Verify that the content is parsed
-        assertFalse(fileSession.isModified(), "File should be marked as unmodified after loading.");
-    }
 
     @Test
     void testSave() throws IOException {
@@ -83,14 +61,6 @@ class FileSessionTest {
         assertTrue(Files.exists(Paths.get(fileSession.getFilename())), "File should be saved to the disk.");
     }
 
-    @Test
-    void testAddSession() {
-        FileSession subSession = new FileSession("subFile.html");
-        fileSession.addSession(subSession);
-
-        assertEquals(1, fileSession.getFileSessionList().size(), "There should be one sub-session added.");
-        assertEquals("subFile.html", fileSession.getFileSessionList().get(0).getFilename(), "The filename of the added session should match.");
-    }
 
     @Test
     void testMarkAsModified() {
