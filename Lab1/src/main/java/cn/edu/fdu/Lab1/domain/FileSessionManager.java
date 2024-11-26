@@ -1,5 +1,7 @@
 package cn.edu.fdu.Lab1.domain;
 
+import cn.edu.fdu.Lab1.util.SpellCheckUtil;
+import cn.edu.fdu.Lab1.util.impl.SpellCheckUtilImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

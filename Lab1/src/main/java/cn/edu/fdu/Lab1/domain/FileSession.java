@@ -1,5 +1,6 @@
 package cn.edu.fdu.Lab1.domain;
 
+import cn.edu.fdu.Lab1.util.impl.SpellCheckUtilImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class FileSession {
     private CommandContext commandContext;
     private CommandHistory commandHistory;
     private List<FileSession> fileSessionList; //子目录列表
+    private SpellCheckUtilImpl spellChecker;
 
     public FileSession(String filename) {
         this.filename = filename;
@@ -32,6 +34,7 @@ public class FileSession {
         this.commandContext = new CommandContext(); // 初始化新的命令上下文
         this.commandHistory = new CommandHistory();
         this.fileSessionList = new ArrayList<>();
+        this.spellChecker = new SpellCheckUtilImpl();
     }
 
     public void load() throws IOException,Exception {
@@ -49,6 +52,8 @@ public class FileSession {
             commandContext.parser(content);
             System.out.println(commandContext);
             // commandContext.parser(content);
+            HTMLElement HTML = commandContext.getIdMap().get("html");
+            spellChecker.checkSpellErrors(HTML);
         }
 
         // 文件加载后，标记为未修改
@@ -88,6 +93,7 @@ public class FileSession {
         // 实现文件保存逻辑
 
         HTMLElement HTML = commandContext.getIdMap().get("html");
+//        spellChecker.checkSpellErrors(HTML);
         String content = HTML.print(4);
         System.out.println(content);
         FileWriter writer = new FileWriter(new File(filename));
