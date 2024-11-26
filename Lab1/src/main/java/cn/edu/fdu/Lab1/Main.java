@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
         CommandExecutor executor = new CommandExecutor();
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the HTML Editor!");
         while (true) {
             System.out.print("\nEnter command: ");
             String input = scanner.nextLine();
