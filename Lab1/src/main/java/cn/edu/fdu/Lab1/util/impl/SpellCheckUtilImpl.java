@@ -18,7 +18,7 @@ public class SpellCheckUtilImpl implements SpellCheckUtil {
 
 
     private static final Set<String> DICTIONARY = new HashSet<>(Arrays.asList(
-            "hello", "world", "sample", "text", "paragraph", "html", "div", "span", "body"
+            "hello", "world", "sample", "text", "paragraph", "html", "div", "span", "body","p"
     ));
 
     /**

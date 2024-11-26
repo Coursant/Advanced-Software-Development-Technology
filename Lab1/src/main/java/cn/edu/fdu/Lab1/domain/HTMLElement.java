@@ -23,7 +23,7 @@ public class HTMLElement {
         this.textContent = textContent;
         this.children = new ArrayList<>();
         this.parentId = null;  // 默认没有父元素
-        this.hasSpellError = true;
+        this.hasSpellError = false;
         this.IsShowId = false;
     }
 

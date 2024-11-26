@@ -68,11 +68,14 @@ public class CommandExecutor {
                 //增强部分2：是否显示#id
                 case "showid":
                     handleShowid(parts[1]);
+                    break;
                 //增强部分3：显示文件目录
                 case "dir-tree":
                     handleDirTree(parts[0]);
+                    break;
                 case "dir-ident":
                     handelDirIdent(parts[0]);
+                    break;
                 default:
                     throw new IllegalArgumentException("Unknown command: " + commandName);
             }
