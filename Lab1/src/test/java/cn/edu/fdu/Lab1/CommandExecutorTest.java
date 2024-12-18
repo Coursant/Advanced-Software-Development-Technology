@@ -24,7 +24,7 @@ public class CommandExecutorTest {
         testLoadCommand();
         // 执行 insert 指令
         System.out.println("Executing testInsertCommand...");
-        commandExecutor.executeCommand("insert div myDiv 0 This is a test div.");
+        commandExecutor.executeCommand("insert div div1 body this is a test div1.");
         testPrintTreeCommand();
     }
 
@@ -33,7 +33,7 @@ public class CommandExecutorTest {
         testLoadCommand();
         // 执行 append 指令
         System.out.println("Executing testAppendCommand...");
-        commandExecutor.executeCommand("append p myParagraph 0 This is a paragraph.");
+        commandExecutor.executeCommand("insert div div2 body this is a test div2.");
         testPrintTreeCommand();
     }
 
@@ -43,7 +43,7 @@ public class CommandExecutorTest {
         testInsertCommand();
         // 执行 delete 指令
         System.out.println("Executing testDeleteCommand...");
-        commandExecutor.executeCommand("delete myDiv");
+        commandExecutor.executeCommand("delete div1");
         testPrintTreeCommand();
     }
 
