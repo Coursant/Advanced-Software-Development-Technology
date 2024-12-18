@@ -53,6 +53,9 @@ public class CommandExecutor {
                 case "redo":
                     handleRedo();
                     break;
+                case "read":
+                    handleLoadFile(parts[1]);
+                    break;
                 //钱：添加多编辑器命令
                 case "load":
                     handleLoadFile(parts[1]);
