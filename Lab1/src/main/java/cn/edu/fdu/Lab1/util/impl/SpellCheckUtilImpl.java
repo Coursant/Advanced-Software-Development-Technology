@@ -32,11 +32,15 @@ public class SpellCheckUtilImpl implements SpellCheckUtil {
             return false;
         }
 
-        String[] words = content.split("\\s+");
+        String[] words = content.split("[^a-zA-Z]+"); // 过滤非字母字符
         for (String word : words) {
-            // 有单词不在词典中找到拼写错误，返回true
-            if (!langTool.check(word.toLowerCase()).isEmpty()) {
-                return true;
+            if (word.isEmpty()) continue;
+
+            //System.out.println("Checking word: " + word);
+            List<RuleMatch> matches = langTool.check(word);
+            if (!matches.isEmpty()) {
+                //System.out.println("Spelling error found: " + word);
+                return true; // 存在拼写错误
             }
         }
         return false;

@@ -105,7 +105,7 @@ public class HTMLElement {
         this.IsShowId = isShow;
         if(!children.isEmpty()){
             for (HTMLElement child : children) {
-                child.setIsShowId(isShow);
+                child.changeShowId(isShow);
             }
         }
     }

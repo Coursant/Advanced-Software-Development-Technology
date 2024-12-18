@@ -24,7 +24,7 @@ public class FileSessionManager {
 //        this.scanner = new Scanner(System.in);
     }
 
-    
+
     public void setActiveSession(FileSession session) {
         if (session != null) {
             // 保存文件的原始状态
@@ -43,13 +43,6 @@ public class FileSessionManager {
         return sessions;
     }
 
-    public FileSession getPreviouSession(){
-        return previousSession;
-    }
-
-    public void setPreviouSession(FileSession session){
-        previousSession = session;
-    }
 
     public FileSession getSessionByFilename(String filename) {
         for (FileSession session : sessions) {
