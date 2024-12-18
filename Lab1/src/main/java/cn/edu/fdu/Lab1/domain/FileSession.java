@@ -24,6 +24,7 @@ public class FileSession {
     private List<FileSession> fileSessionList; //子目录列表
     private SpellCheckUtilImpl spellChecker;
 
+
     public FileSession(String filename) {
         this.filename = filename;
         this.modified = false;
@@ -33,9 +34,8 @@ public class FileSession {
         this.spellChecker = new SpellCheckUtilImpl();
     }
 
-    
 
-    
+
     public String getFilename() {
         return filename;
     }

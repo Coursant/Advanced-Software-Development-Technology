@@ -23,7 +23,7 @@ public class HTMLElement {
         this.textContent = textContent;
         this.children = new ArrayList<>();
         this.parentId = null;  // 默认没有父元素
-        this.hasSpellError = false;
+        this.hasSpellError = true;
         this.IsShowId = false;
     }
 
@@ -105,7 +105,7 @@ public class HTMLElement {
         this.IsShowId = isShow;
         if(!children.isEmpty()){
             for (HTMLElement child : children) {
-                child.setIsShowId(isShow);
+                child.changeShowId(isShow);
             }
         }
     }
